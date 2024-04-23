@@ -4,28 +4,27 @@ import requests
 from constants import API
 from streamlit_jwt_authenticator import Authenticator
 
-def handler(data, res):
-    print(data)
-    print(res)
-    return
+def handler(data):
+    print("SUCCESS")
+    return data.json()['tokens']
 
-authenticator = Authenticator(f"{API}/login", response_handler=handler, headers={"Content-Type": "application/json"})
+authenticator = Authenticator(url=f"{API}/login", response_handler=handler, token_key='access_token')
 
-print(st.session_state)
-if "auth" not in st.session_state:
-    st.session_state.auth = False
+# print(st.session_state)
+# if "auth" not in st.session_state:
+#     st.session_state.auth = False
 
-st.session_state._auth = st.session_state.auth
+# st.session_state._auth = st.session_state.auth
 
-def set_auth():
-    st.session_state.auth = st.session_state._auth
+# def set_auth():
+#     st.session_state.auth = st.session_state._auth
 
-st.selectbox(
-    "Select auth:",
-    [False, True],
-    key="_auth",
-    on_change=set_auth,
-)
+# st.selectbox(
+#     "Select auth:",
+#     [False, True],
+#     key="_auth",
+#     on_change=set_auth,
+# )
 
 if "auth_form" not in st.session_state:
     st.session_state.auth_form = "sign in"
@@ -55,29 +54,14 @@ if st.session_state.auth_form== "sign up":
 
             if data.status_code == 200:
                 st.session_state.auth_form="sign in"
+                st.rerun()
             else:
                 st.markdown('ERROR');
 
 if st.session_state.auth_form == "sign in":
     authenticator.login()
-   
-    if st.session_state["authentication_status"]:
-        st.markdown("Content")
-    
-    # with st.form("Login Form"):
-    #     username = st.text_input("Username", placeholder = 'Your unique username')
-    #     password = st.text_input("Password", placeholder = 'Your password', type = 'password')
 
-    #     st.markdown("###")
-    #     login_submit_button = st.form_submit_button(label = 'Login')
-
-    #     if login_submit_button:
-    #         data = requests.post(f"{API}/login", json={ 'login': username, 'password': password })
-
-    #         if data.status_code == 200:
-    #             token = data.json()['tokens']['access_token']
-    #         else:
-    #             st.markdown('ERROR');
-            
+if st.session_state["authentication_status"]:
+    authenticator.logout()
         
 menu()

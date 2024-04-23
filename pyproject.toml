@@ -9,8 +9,6 @@ readme = "README.md"
 python = "^3.12"
 streamlit = "^1.33.0"
 streamlit-modal = "^0.1.2"
-streamlit-jwt-authenticator = "^0.0.2"
-
 
 [build-system]
 requires = ["poetry-core"]

@@ -201,6 +201,20 @@ files = [
 ]
 
 [[package]]
+name = "deprecation"
+version = "2.1.0"
+description = "A library to handle automated deprecations"
+optional = false
+python-versions = "*"
+files = [
+    {file = "deprecation-2.1.0-py2.py3-none-any.whl", hash = "sha256:a10811591210e1fb0e768a8c25517cabeabcba6f0bf96564f8ff45189f90b14a"},
+    {file = "deprecation-2.1.0.tar.gz", hash = "sha256:72b3bde64e5d778694b0cf68178aed03d15e15477116add3fb773e581f9518ff"},
+]
+
+[package.dependencies]
+packaging = "*"
+
+[[package]]
 name = "gitdb"
 version = "4.0.11"
 description = "Git Object Database"
@@ -957,6 +971,21 @@ watchdog = {version = ">=2.1.5", markers = "platform_system != \"Darwin\""}
 snowflake = ["snowflake-connector-python (>=2.8.0)", "snowflake-snowpark-python (>=0.9.0)"]
 
 [[package]]
+name = "streamlit-modal"
+version = "0.1.2"
+description = "Modal for streamlit"
+optional = false
+python-versions = "*"
+files = [
+    {file = "streamlit_modal-0.1.2-py3-none-any.whl", hash = "sha256:60dac7590fd7a168d046cc03335460ac323b060676818bf8000949a878c74386"},
+    {file = "streamlit_modal-0.1.2.tar.gz", hash = "sha256:3c169aed6e659fd834e3526ffac285efd77867c2e5847131c2fa9d441468a522"},
+]
+
+[package.dependencies]
+deprecation = "*"
+streamlit = "*"
+
+[[package]]
 name = "tenacity"
 version = "8.2.3"
 description = "Retry code until it succeeds"
@@ -1095,4 +1124,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "286f0241d42dbb72c0c444123516c186ceae632630b0fbfaa8b7bf060a37bffb"
+content-hash = "db56ee76f5d9e6cb7ddf121dfab1b96b0bc43fa716119af20b3db896babbe9da"

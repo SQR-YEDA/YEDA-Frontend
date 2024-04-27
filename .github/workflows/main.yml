@@ -25,6 +25,10 @@ jobs:
         run: poetry install
       - name: Run tests
         run: poetry run pytest tests/
+      - name: Install software
+        run: sudo apt-get install -y chromium-browser
+      - name: Install the necessary packages
+        run: pip install requests webdriver-manager selenium pytest
       - name: Start Streamlit app
         run: poetry run streamlit run app.py & sleep 5 & poetry run pytest selenium/
   code-quality:

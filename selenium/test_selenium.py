@@ -15,17 +15,17 @@ def test_selenium():
     username = WebDriverWait(browser, 30).until(
         EC.presence_of_element_located((By.ID, "text_input_1"))
     )
-    username.send_keys('username') 
+    username.send_keys('username')
 
     password = browser.find_element(By.ID, 'text_input_2')
     password.send_keys('username' + Keys.RETURN)
-    
+
     time.sleep(3)
 
     browser.refresh()
 
     WebDriverWait(browser, 30).until(
-        EC.presence_of_element_located((By.TAG_NAME, "p")) 
+        EC.presence_of_element_located((By.TAG_NAME, "p"))
     )
     elements = browser.find_elements(By.TAG_NAME, 'p')
 
@@ -46,7 +46,7 @@ def test_selenium():
     menu_item_tierlist.click()
 
     # time.sleep(3)
-    
+
     # add_category_button = None
     # for e in elements:
     #     if (e.text == 'Add category'):

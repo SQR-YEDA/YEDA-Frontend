@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import time
 
+
 def test_selenium():
     options = Options()
     options.add_argument('--headless')

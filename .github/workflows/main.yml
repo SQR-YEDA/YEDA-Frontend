@@ -25,6 +25,8 @@ jobs:
         run: poetry install
       - name: Run tests
         run: poetry run pytest tests/
+      - name: Start Streamlit app
+        run: poetry run streamlit run app.py & sleep 5 & poetry run pytest selenium/
   code-quality:
     strategy:
       fail-fast: false

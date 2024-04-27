@@ -45,8 +45,7 @@ def category_widget(name, elements):
         categories = list(map(
             lambda x: {"name": x[0], "element_ids": list(map(lambda y: y['id'], x[1]))},
             st.session_state["categories"].items()))
-        res = requests.put(f"{API}/tier-list",
-                     json={
+        res = requests.put(f"{API}/tier-list", json={
                          "update_tier_list": {
                             "name": st.session_state["tier_list_name"],
                             "categories": categories
@@ -79,9 +78,11 @@ if 'init' in st.session_state:
     elements = requests.get(f"{API}/elements", headers=head).json()
 
     st.session_state["tier_list_name"] = tierlist['tier_list']['name']
-    st.session_state["products"] = {product['name']: {'id': product['id'], 'calories': product['calories']} for product in elements['elements']}
+    st.session_state["products"] = {product['name']: {'id': product['id'], 'calories': product['calories']}
+                                    for product in elements['elements']}
 
-    st.session_state["categories"] = {category['name']: category['elements'] for category in tierlist['tier_list']['categories']}
+    st.session_state["categories"] = {category['name']: category['elements']
+                                      for category in tierlist['tier_list']['categories']}
 
 
 # Header layout
@@ -115,7 +116,8 @@ def add_product(product):
     new_products = new_products.json()
 
     # Update products to get id for new product
-    st.session_state["products"] = {product['name']: {'id': product['id'], 'calories': product['calories']} for product in new_products['elements']}
+    st.session_state["products"] = {product['name']: {'id': product['id'], 'calories': product['calories']}
+                                    for product in new_products['elements']}
 
     add_product_modal.close()
 
@@ -139,8 +141,7 @@ def add_category(name):
     head = {'Authorization': 'Bearer {}'.format(st.session_state["access_token"])}
     st.session_state["categories"][name] = []
     categories = list(map(lambda x: {"name": x[0], "element_ids": x[1]}, st.session_state["categories"].items()))
-    res = requests.put(f"{API}/tier-list",
-                 json={
+    res = requests.put(f"{API}/tier-list", json={
                      "update_tier_list": {
                         "name": st.session_state["tier_list_name"],
                         "categories": categories

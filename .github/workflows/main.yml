@@ -29,7 +29,7 @@ jobs:
         run: sudo apt-get install -y chromium-browser
       - name: Install the necessary packages
         run: pip install requests webdriver-manager selenium pytest
-      - name: Start Streamlit app
+      - name: Start Streamlit app and Selenium tests
         run: poetry run streamlit run app.py & sleep 5 & poetry run pytest selenium/
   code-quality:
     strategy:

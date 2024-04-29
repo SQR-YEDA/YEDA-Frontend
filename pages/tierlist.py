@@ -45,12 +45,11 @@ def category_widget(name, elements):
         categories = list(map(
             lambda x: {"name": x[0], "element_ids": list(map(lambda y: y['id'], x[1]))},
             st.session_state["categories"].items()))
-        res = requests.put(f"{API}/tier-list", json={
+        requests.put(f"{API}/tier-list", json={
                          "update_tier_list": {
                             "name": st.session_state["tier_list_name"],
                             "categories": categories
                          }}, headers=head)
-        print(res.json())
 
     with category:
         category_name, multiselect = st.columns([15, 40])
@@ -93,13 +92,12 @@ head1.markdown(f"# {st.session_state['tier_list_name']}")
 with head2:
     st.write("")  # genius way to center the button
     st.write("")
-    add_product_modal_open = st.button("Add product")
-
+    add_product_modal_open = st.button("Add product", key="add_product_button")
 
 with head3:
     st.write("")
     st.write("")
-    add_category_modal_open = st.button("Add category")
+    add_category_modal_open = st.button("Add category", key="add_category_button")
 
 # Categories
 category_widgets = [category_widget(name, elements) for name, elements in st.session_state['categories'].items()]
@@ -127,11 +125,11 @@ if add_product_modal_open:
 
 if add_product_modal.is_open():
     with add_product_modal.container():
-        product_name = st.text_input(label="Name", placeholder="Enter your product name")
-        product_calories = st.number_input(label="Calories", step=1)
+        product_name = st.text_input(label="Name", placeholder="Enter your product name", key="product_name_input")
+        product_calories = st.number_input(label="Calories", step=1, key="product_calories_input")
         _, col2 = st.columns([10, 1])
         with col2:
-            st.button("Add", on_click=lambda: add_product({"name": product_name, "calories": product_calories}))
+            st.button("Add", key="add_product_in_modal_button", on_click=lambda: add_product({"name": product_name, "calories": product_calories}))
 
 # Add Category Modal
 add_category_modal = Modal("Add product", key="add_category_modal")
@@ -141,12 +139,11 @@ def add_category(name):
     head = {'Authorization': 'Bearer {}'.format(st.session_state["access_token"])}
     st.session_state["categories"][name] = []
     categories = list(map(lambda x: {"name": x[0], "element_ids": x[1]}, st.session_state["categories"].items()))
-    res = requests.put(f"{API}/tier-list", json={
+    requests.put(f"{API}/tier-list", json={
                      "update_tier_list": {
                         "name": st.session_state["tier_list_name"],
                         "categories": categories
                      }}, headers=head)
-    print(res.json())
     add_category_modal.close()
 
 
@@ -155,7 +152,7 @@ if add_category_modal_open:
 
 if add_category_modal.is_open():
     with add_category_modal.container():
-        category_name = st.text_input(label="Name", placeholder="Enter your category name")
+        category_name = st.text_input(label="Name", placeholder="Enter your category name", key="category_name_input")
         _, col2 = st.columns([10, 1])
         with col2:
-            st.button("Add", on_click=lambda: add_category(category_name))
+            st.button("Add", on_click=lambda: add_category(category_name), key="add_category_in_modal_button")

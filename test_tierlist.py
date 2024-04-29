@@ -1,5 +1,6 @@
 from streamlit.testing.v1 import AppTest
 from unittest.mock import patch
+import pytest
 
 
 def mocked_requests_get_product(*args, **kwargs):
@@ -19,7 +20,23 @@ def mocked_requests_get_product(*args, **kwargs):
     return MockResponse({'elements': new_products}, 200)
 
 
-def test_login():
+@pytest.fixture
+def at():
+    mock_product = [{'name': 'test1', 'id': 1, 'calories': 100}, {'name': 'test2', 'id': 2, 'calories': 100}]
+    mock_categories = [{'name': 'c1', 'elements': mock_product}]
+    at = AppTest.from_file("pages/tierlist.py")
+    at.session_state["authentication_status"] = True
+    at.session_state["access_token"] = ""
+    at.session_state["tier_list_name"] = "Tierlist name"
+    at.session_state["products"] = {product['name']: {'id': product['id'], 'calories': product['calories']}
+                                    for product in mock_product}
+    at.session_state["categories"] = {category['name']: category['elements']
+                                      for category in mock_categories}
+
+    return at
+
+
+def test_login(at):
     at = AppTest.from_file("app.py").run()
 
     at.text_input("username_input").input("slry").run()
@@ -36,20 +53,8 @@ def test_login():
 @patch("streamlit.sidebar.page_link")
 @patch("requests.post")
 @patch("requests.get", side_effect=mocked_requests_get_product)
-def test_add_product(page_link, requests_post, requests_get):
-    mock_product = [{'name': 'test1', 'id': 1, 'calories': 100}, {'name': 'test2', 'id': 2, 'calories': 100}]
-    mock_categories = [{'name': 'c1', 'elements': mock_product}]
-
+def test_add_product(page_link, requests_post, requests_get, at):
     product_to_add = {'name': 'add_test', 'id': 3, 'calories': 100}
-
-    at = AppTest.from_file("pages/tierlist.py")
-    at.session_state["authentication_status"] = True
-    at.session_state["access_token"] = ""
-    at.session_state["tier_list_name"] = "Tierlist name"
-    at.session_state["products"] = {product['name']: {'id': product['id'], 'calories': product['calories']}
-                                    for product in mock_product}
-    at.session_state["categories"] = {category['name']: category['elements']
-                                      for category in mock_categories}
 
     at.run()
 
@@ -68,19 +73,7 @@ def test_add_product(page_link, requests_post, requests_get):
 @patch("streamlit.sidebar.page_link")
 @patch("requests.post")
 @patch("requests.put")
-def test_add_category(page_link, r_post, r_put):
-    mock_product = [{'name': 'test1', 'id': 1, 'calories': 100}, {'name': 'test2', 'id': 2, 'calories': 100}]
-    mock_categories = [{'name': 'c1', 'elements': mock_product}]
-
-    at = AppTest.from_file("pages/tierlist.py")
-    at.session_state["authentication_status"] = True
-    at.session_state["access_token"] = ""
-    at.session_state["tier_list_name"] = "Tierlist name"
-    at.session_state["products"] = {product['name']: {'id': product['id'], 'calories': product['calories']}
-                                    for product in mock_product}
-    at.session_state["categories"] = {category['name']: category['elements']
-                                      for category in mock_categories}
-
+def test_add_category(page_link, r_post, r_put, at):
     at.run()
 
     assert at.title[0].value == "Tierlist"
@@ -98,21 +91,8 @@ def test_add_category(page_link, r_post, r_put):
 @patch("streamlit.sidebar.page_link")
 @patch("requests.post")
 @patch("requests.put")
-def test_remove_category(page_link, r_post, r_put):
-    mock_product = [{'name': 'test1', 'id': 1, 'calories': 100}, {'name': 'test2', 'id': 2, 'calories': 100}]
-    mock_categories = [{'name': 'c1', 'elements': mock_product}]
-
-    at = AppTest.from_file("pages/tierlist.py")
-    at.session_state["authentication_status"] = True
-    at.session_state["access_token"] = ""
-    at.session_state["tier_list_name"] = "Tierlist name"
-    at.session_state["products"] = {product['name']: {'id': product['id'], 'calories': product['calories']}
-                                    for product in mock_product}
-    at.session_state["categories"] = {category['name']: category['elements']
-                                      for category in mock_categories}
-
+def test_remove_category(page_link, r_post, r_put, at):
     at.run()
-
     at.button('category_widget_button_delete_c1').click().run()
 
     assert at.session_state['categories'] == {}

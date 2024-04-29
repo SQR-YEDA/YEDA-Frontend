@@ -129,7 +129,9 @@ if add_product_modal.is_open():
         product_calories = st.number_input(label="Calories", step=1, key="product_calories_input")
         _, col2 = st.columns([10, 1])
         with col2:
-            st.button("Add", key="add_product_in_modal_button", on_click=lambda: add_product({"name": product_name, "calories": product_calories}))
+            st.button("Add",
+                      key="add_product_in_modal_button",
+                      on_click=lambda: add_product({"name": product_name, "calories": product_calories}))
 
 # Add Category Modal
 add_category_modal = Modal("Add product", key="add_category_modal")

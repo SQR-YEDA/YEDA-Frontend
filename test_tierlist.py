@@ -37,17 +37,17 @@ def at():
 
 
 def test_login(at):
-    at = AppTest.from_file("app.py").run()
+    att = AppTest.from_file("app.py").run()
 
-    at.text_input("username_input").input("slry").run()
-    at.text_input("password_input").input("12345678").run()
+    att.text_input("username_input").input("slry").run()
+    att.text_input("password_input").input("12345678").run()
 
-    assert at.title[0].value == "Login"
-    assert at.text_input("username_input").value == 'slry'
-    assert at.text_input("password_input").value == '12345678'
-    assert at.button[0].label == 'Login'
+    assert att.title[0].value == "Login"
+    assert att.text_input("username_input").value == 'slry'
+    assert att.text_input("password_input").value == '12345678'
+    assert att.button[0].label == 'Login'
 
-    at.button[0].click()
+    att.button[0].click()
 
 
 @patch("streamlit.sidebar.page_link")

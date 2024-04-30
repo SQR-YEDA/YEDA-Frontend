@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run tests
-        run: poetry run pytest tests/
+        run: poetry run pytest test_tierlist.py
       - name: Install chromium
         run: sudo apt-get install -y chromium-browser
       - name: Start Streamlit app and Selenium tests

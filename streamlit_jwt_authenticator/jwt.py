@@ -152,8 +152,8 @@ class Authenticator:
                 else:
                     self._set_error('Invalid location! Available locations: ["main", "sidebar"].')
 
-                username = login_form.text_input("Username")
-                password = login_form.text_input('Password', type='password')
+                username = login_form.text_input("Username", key="username_input")
+                password = login_form.text_input('Password', type='password', key="password_input")
                 st.session_state['username'] = username
 
                 if login_form.form_submit_button("Login"):

@@ -38,6 +38,8 @@ def set_auth_form():
     st.session_state.auth_form = st.session_state._auth_form
 
 
+st.title("Login")
+
 st.selectbox(
     "Select auth type:",
     ["sign up", "sign in"],
@@ -47,8 +49,9 @@ st.selectbox(
 
 if st.session_state.auth_form == "sign up":
     with st.form("Sign Up Form"):
-        username_sign_up = st.text_input("Username *", placeholder='Enter a unique username')
-        password_sign_up = st.text_input("Password *", placeholder='Create a strong password', type='password')
+        username_sign_up = st.text_input("Username *", placeholder='Enter a unique username', key="username_input")
+        password_sign_up = st.text_input("Password *",
+                                         placeholder='Create a strong password', type='password', key="password_input")
 
         st.markdown("###")
         sign_up_submit_button = st.form_submit_button(label='Register')
